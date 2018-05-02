@@ -5,38 +5,37 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class Merge {
 
-    private static String[] sort(String[] strings, int lo, int hi) {
-        if (hi-lo < 2)
-            return new String[]{strings[lo]};
+    private static String[] aux;
+
+    private static void sort(String[] strings, int lo, int hi) {
+        if (hi - lo < 2) return;
         int mid = lo + (hi - lo) / 2;
-        String[] part1 = sort(strings, lo, mid);
-        String[] part2 = sort(strings, mid, hi);
-        return merge(part1, part2);
+        sort(strings, lo, mid);
+        sort(strings, mid, hi);
+        merge(strings, lo, mid, hi);
     }
 
-    private static String[] merge(String[] part1, String[] part2) {
-        String[] aux = new String[part1.length + part2.length];
-        int i = 0, j = 0, k = 0;
-        while (i < part1.length && j < part2.length) {
-            if (part1[i].compareTo(part2[j]) < 0)
-                aux[k++] = part1[i++];
+    private static void merge(String[] strings, int lo, int mid, int hi) {
+        int i = lo, j = mid, k = 0;
+        while (i < mid && j < hi) {
+            if (strings[i].compareTo(strings[j]) < 0)
+                aux[k++] = strings[i++];
             else
-                aux[k++] = part2[j++];
+                aux[k++] = strings[j++];
         }
-        if (i < part1.length)
-            for(int l=i; l<part1.length; l++)
-                aux[k++] = part1[l];
+        if (i < mid)
+            for (int l = i; l < mid; l++)
+                aux[k++] = strings[l];
         else
-            for(int l=j; l<part2.length; l++)
-                aux[k++] = part2[l];
-        return aux;
+            for (int l = j; l < hi; l++)
+                aux[k++] = strings[l];
+        for(int l=lo;  l<hi; l++)
+            strings[l] = aux[l-lo];
     }
 
     public static void sort(String[] strings) {
-        String[] result = sort(strings, 0, strings.length);
-        for (int i = 0; i < strings.length; i++) {
-            strings[i] = result[i];
-        }
+        aux = new String[strings.length];
+        sort(strings, 0, strings.length);
     }
 
     public static void main(String[] args) {
