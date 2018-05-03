@@ -1,0 +1,9 @@
+*.class
+*.jar
+*.war
+*.pdf
+*~
+.metadata/.plugins/*
+/bin/
+.idea/*
+.iml
