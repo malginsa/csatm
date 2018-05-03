@@ -1,8 +1,5 @@
 package l11;
 
-import edu.princeton.cs.algs4.StdIn;
-import edu.princeton.cs.algs4.StdOut;
-
 public class Merge {
 
     private static String[] aux;
@@ -34,16 +31,13 @@ public class Merge {
     }
 
     public static void sort(String[] strings) {
+        for (String string : strings) {
+            if(string == null){
+                System.err.println("can't sort nulls");
+                return;
+            }
+        }
         aux = new String[strings.length];
         sort(strings, 0, strings.length);
-    }
-
-    public static void main(String[] args) {
-        String[] strings = StdIn.readAllStrings();
-//        String[] strings = {"4", "1", "2", "5", "4", "6", "3", "4"};
-        sort(strings);
-        for (String string : strings) {
-            StdOut.println(string);
-        }
     }
 }

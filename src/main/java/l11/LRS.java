@@ -31,7 +31,7 @@ public class LRS {
     protected static String lrsSuffixSorting(String s) {
         int N = s.length();
         String[] suffixes = new String[N];
-        for (int i = 0; i < N - 1; i++) {
+        for (int i = 0; i < N; i++) {
             suffixes[i] = s.substring(i, N);
         }
         Merge.sort(suffixes);
