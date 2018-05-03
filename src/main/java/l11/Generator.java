@@ -5,6 +5,16 @@ import edu.princeton.cs.algs4.StdRandom;
 
 public class Generator {
 
+    private static char[] ACGT_CHARS = {'a', 'c', 'g', 't'};
+
+    public static String randomACGTstring(int length) {
+        char[] chars = new char[length];
+        for (int i = 0; i < length; i++) {
+            chars[i] = ACGT_CHARS[StdRandom.uniform(ACGT_CHARS.length)];
+        }
+        return new String(chars);
+    }
+
     public static String generateRandomString(int length, String alphabet) {
         char[] chars = new char[length];
         for (int i = 0; i < length; i++) {
