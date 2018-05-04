@@ -23,4 +23,5 @@ public class LRSTest {
     public void lrsSuffixSorting() {
         Assert.assertEquals(LRS.lrsSuffixSorting("aacaagtttacaagc"), "acaag");
     }
+
 }
