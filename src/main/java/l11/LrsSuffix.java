@@ -7,15 +7,16 @@ import java.util.Arrays;
 /**
  * Longest Repeated Substring
  */
-public class LRS {
+public class LrsSuffix {
 
-    private static class Suffix implements Comparable<Suffix> {
+    private final String text;
+    private Suffix[] suffixes;
 
-        private final String text;
+    public class Suffix implements Comparable<Suffix> {
+
         private final int index;
 
-        public Suffix(String text, int index) {
-            this.text = text;
+        public Suffix(int index) {
             this.index = index;
         }
 
@@ -42,52 +43,57 @@ public class LRS {
         public String toString() {
             return text.substring(index);
         }
+
+        public String subString(int start, int end) {
+            return text.substring(index + start, index + end);
+        }
+
+    }
+
+    public LrsSuffix(String text) {
+        this.text = text;
+        this.createSuffixes();
+    }
+
+    protected Suffix createSuffix(int index) {
+        return new Suffix(index);
+    }
+
+    private void createSuffixes() {
+        int N = this.text.length();
+        this.suffixes = new Suffix[N];
+        for (int i = 0; i < N; i++) {
+            this.suffixes[i] = new Suffix(i);
+        }
     }
 
     /**
      * longest common prefix
-     * @param s1
-     * @param s2
      */
     protected static String lcp(Suffix s1, Suffix s2) {
         int N = Math.min(s1.length(), s2.length());
         for (int i = 0; i < N; i++) {
             if (s1.charAt(i) != s2.charAt(i))
-                return s1.substring(0, i);
+                return s1.subString(0, i);
         }
-        return s1.substring(0, N);
+        return s1.subString(0, N);
     }
 
-    protected static String lrsBrute(String s) {
-        int N = s.length();
-        String result = "";
-        for (int i = 0; i < N; i++)
-            for (int j = i + 1; j < N; j++) {
-                String candidate = lcp(s.substring(i, N), s.substring(j, N));
-                if (candidate.length() > result.length()) result = candidate;
-            }
-        return result;
-    }
-
-    protected static String lrsSuffixSorting(String s) {
-        int N = s.length();
-        Suffix[] suffixes = new Suffix[N];
-        for (int i = 0; i < N; i++) {
-            suffixes[i] = new Suffix(s, i);
-        }
-        Arrays.sort(suffixes);
+    protected String doLrs() {
+        int N = text.length();
+        Arrays.sort(this.suffixes);
         String result = "";
         for (int i = 0; i < N - 1; i++) {
-            String candidate = lcp(suffixes[i], suffixes[i + 1]);
+            String candidate = lcp(this.suffixes[i], this.suffixes[i + 1]);
             if (candidate.length() > result.length()) result = candidate;
         }
         return result;
     }
 
     public static void main(String[] args) {
-
-        String aCGTstring = Generator.randomACGTstring(100_000);
-        String lrsSuffixSorting = lrsSuffixSorting(aCGTstring);
-        StdOut.println(lrsSuffixSorting);
+        String aCGTstring = Generator.randomACGTstring(500_000);
+        LrsSuffix lrsSuffix = new LrsSuffix(aCGTstring);
+        String lrs = lrsSuffix.doLrs();
+        StdOut.println(lrs);
     }
 }
