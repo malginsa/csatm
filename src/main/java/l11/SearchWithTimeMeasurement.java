@@ -4,25 +4,18 @@ import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 
-public class Sequential {
-
-    public static int search (String key, String[] list)
-    {
-        for (int i=0; i<list.length; i++)
-            if (list[i].equals(key))
-                return i;
-        return -1;
-    }
+public class SearchWithTimeMeasurement {
 
     public static void main(String[] args) {
 
-        String[] words = StdIn.readAllStrings();
+        String[] words = Generator.generateRandomStrings(
+                10, "abcdefgheijklmnopqrstuvwxyz", 10_000);
         int count = words.length;
         double start = System.currentTimeMillis() / 1000.;
         for (int i=0; i<10*count; i++)
         {
             String key = words[StdRandom.uniform(count)];
-            if (search(key, words) == -1)
+            if (Search.sequential(key, words) == -1)
                 StdOut.println(key);
         }
         double finish = System.currentTimeMillis() / 1000.;
